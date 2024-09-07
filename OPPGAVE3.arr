@@ -12,3 +12,12 @@ end
 
 
 mellom-alder(tabell)
+
+
+fun young-vs-old(t,vs):
+  so = order-by(tabell, "age", vs)
+  so.row-n(0)["name"] + " " + so.row-n(0)["lastname"] + " " + so.row-n(0)["email"]
+  
+end
+young-vs-old(tabell,true)
+young-vs-old(tabell,false)
