@@ -21,3 +21,11 @@ fun young-vs-old(t,vs):
 end
 young-vs-old(tabell,true)
 young-vs-old(tabell,false)
+
+fun gjensommonsni(t):
+  block:
+    var dd = 0
+    t.get-column("age").map(lam(x): dd := dd + x end)
+    dd / t.length()
+  end
+end
