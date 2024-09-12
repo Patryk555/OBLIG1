@@ -1,31 +1,61 @@
-include shared-gdrive("dcic-2021", "1wyQZj_L0qqV9Ekgr9au6RX2iqt2Ga8Ep")
+#OPG 1A
 
-import gdrive-sheets as GS
-sheet = GS.load-spreadsheet("1RYN0i4Zx_UETVuYacgaGfnFcv4l9zd9toQTTdkQkj7g")
-tabell  = load-table: id :: Number, name :: String, lastname :: String, email :: String, gender :: String, ip :: String, age :: Number
-  source: sheet.sheet-by-name("o1-oppg3", true)
-end
-
-fun mellom-alder(t):
-  filter-with(t, lam(r): (r["age"] < 80) and (r["age"] > 30) end).select-columns([list:"name","age"])
-end
-
-
-mellom-alder(tabell)
-
-
-fun young-vs-old(t,vs):
-  so = order-by(tabell, "age", vs)
-  so.row-n(0)["name"] + " " + so.row-n(0)["lastname"] + " " + so.row-n(0)["email"]
+#Navngir funksjon og spesifiserer en input(n)
+fun krone-til-euro(n):
   
-end
-young-vs-old(tabell,true)
-young-vs-old(tabell,false)
+  #Lagrer valutakurs i en variabel
+  euro = 0.084 
+  
+  #Ganger nok med kurs og omgjør nummer til tekst med 2 desimaler
+  c = num-to-string-digits(n * euro, 2)
+  
+  #Printer resultatet ovenfor i en formatert 
+  (num-to-string(n) + " NOK er: " + c + "€")
 
-fun gjensommonsni(t):
-  block:
-    var dd = 0
-    t.get-column("age").map(lam(x): dd := dd + x end)
-    dd / t.length()
+#Tester at funksjonen gir forventet svar
+where:
+  krone-til-euro(67) is "67 NOK er: 5.63€"
+  krone-til-euro(70) is "70 NOK er: 5.88€"
+  krone-til-euro(80) is "80 NOK er: 6.72€"
+end
+
+
+#OPG 1B
+
+#Nøyaktig samme som over, bare byttet euro til dollar og verdien på kursen
+fun krone-til-dollar(n): input(n)
+
+  dollar = 0.09 
+
+  c = num-to-string-digits(n * dollar, 2) 
+  (num-to-string(n) + " NOK er: " + c + "$")
+  
+where:
+  krone-til-dollar(67) is "67 NOK er: 6.03$"
+  krone-til-dollar(70) is "70 NOK er: 6.30$"
+  krone-til-dollar(80) is "80 NOK er: 7.20$"
+end
+
+
+#OPG 1C
+
+#Navngir funksjon, nå med to inputs slik at vi kan velge ønsket kurs
+fun krone-veksler(n, k):
+  
+  #Sjekker om verdien av k er "USD"
+  if k == "USD":
+    
+    #Sender mengden NOK inn i funksjon fra 1B
+    krone-til-dollar(n)
+    
+  #Hvis k ikke var "USD", så sjekker vi om den var "EURO"
+  else if k == "EURO":
+    
+    #Sender mengden NOK inn i funksjon fra 1A
+    krone-til-euro(n)
+    
+  #Hvis k ikke var "USD" eller "Euro" så skriver vi feil  
+  else:
+    ("FEIL")
   end
 end
